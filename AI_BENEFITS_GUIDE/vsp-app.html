@@ -1577,6 +1577,22 @@
         font-size: 15px;
         color: #174fb4;
       }
+      .bg-trigger.iris-pulse {
+        animation: iris-launcher-pulse 800ms ease-out 1;
+      }
+      @keyframes iris-launcher-pulse {
+        0% { box-shadow: 0 4px 12px rgba(9, 31, 61, 0.24); }
+        45% { box-shadow: 0 0 0 9px rgba(47, 103, 207, 0.22), 0 6px 18px rgba(9, 31, 61, 0.28); }
+        100% { box-shadow: 0 4px 12px rgba(9, 31, 61, 0.24); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .flyout-backdrop, .flyout-panel, .bg-trigger { transition: none; }
+        .bg-trigger.iris-pulse {
+          animation: none;
+          outline: 2px solid rgba(23, 79, 180, 0.55);
+          outline-offset: 3px;
+        }
+      }
 
       .flyout-backdrop {
         position: fixed;
@@ -3122,7 +3138,7 @@
         </div>
       </div>
       <div class="fp-body" id="fpBody">
-        <p class="fp-intro">Hi there, I am Iris, your vision guide assistent. I am here when you need me, just click the white button on top of page if you need some help.</p>
+        <p class="fp-intro">Hi, I’m Iris, your personalized vision guide. I can answer questions about your vision benefits, help you find care, and guide you to the right next step. If you need me later, just click the white Iris button at the top of the page.</p>
         <div>
           <div class="fp-chips-label">Suggested questions</div>
           <div class="fp-chip-row" id="fpChipRow"></div>
@@ -3869,18 +3885,81 @@
       ];
 
       let fpPendingQ = null;
+      const IRIS_INTRO_STORAGE_KEY = "iris-intro-seen";
+      const IRIS_INTRO_OPEN_DELAY = 2500;
+      const IRIS_INTRO_VISIBLE_DURATION = 6000;
+      let irisIntroOpenTimer = null;
+      let irisIntroCloseTimer = null;
+      let irisLauncherPulseTimer = null;
+      let irisIntroActive = false;
+      let irisIntroInteracted = false;
 
-      function openFlyout() {
+      function clearIrisIntroTimers() {
+        window.clearTimeout(irisIntroOpenTimer);
+        window.clearTimeout(irisIntroCloseTimer);
+        irisIntroOpenTimer = null;
+        irisIntroCloseTimer = null;
+      }
+
+      function cancelIrisIntro() {
+        clearIrisIntroTimers();
+        irisIntroActive = false;
+      }
+
+      function pulseIrisLauncher() {
+        const launcher = document.querySelector(".bg-trigger");
+        if (!launcher) return;
+        launcher.classList.add("iris-pulse");
+        irisLauncherPulseTimer = window.setTimeout(() => {
+          launcher.classList.remove("iris-pulse");
+          irisLauncherPulseTimer = null;
+        }, 800);
+      }
+
+      function openFlyout({ automatic = false } = {}) {
+        if (!automatic) cancelIrisIntro();
         document.getElementById("flyoutBackdrop").classList.add("open");
         document.getElementById("flyoutPanel").classList.add("open");
         document.body.style.overflow = "hidden";
         fpUpdateHeader();
         fpRenderChips();
       }
-      function closeFlyout() {
+      function closeFlyout({ automatic = false } = {}) {
+        if (!automatic) cancelIrisIntro();
         document.getElementById("flyoutBackdrop").classList.remove("open");
         document.getElementById("flyoutPanel").classList.remove("open");
         document.body.style.overflow = "";
+      }
+
+      function fpRegisterInteraction() {
+        if (!irisIntroActive) return;
+        irisIntroInteracted = true;
+        window.clearTimeout(irisIntroCloseTimer);
+        irisIntroCloseTimer = null;
+        irisIntroActive = false;
+      }
+
+      function scheduleIrisIntroduction() {
+        try {
+          if (window.sessionStorage.getItem(IRIS_INTRO_STORAGE_KEY)) return;
+          window.sessionStorage.setItem(IRIS_INTRO_STORAGE_KEY, "true");
+        } catch (error) {
+          return;
+        }
+
+        irisIntroOpenTimer = window.setTimeout(() => {
+          irisIntroOpenTimer = null;
+          irisIntroActive = true;
+          irisIntroInteracted = false;
+          openFlyout({ automatic: true });
+          irisIntroCloseTimer = window.setTimeout(() => {
+            irisIntroCloseTimer = null;
+            if (!irisIntroActive || irisIntroInteracted) return;
+            irisIntroActive = false;
+            closeFlyout({ automatic: true });
+            pulseIrisLauncher();
+          }, IRIS_INTRO_VISIBLE_DURATION);
+        }, IRIS_INTRO_OPEN_DELAY);
       }
 
       function fpUpdateHeader() {
@@ -4162,6 +4241,7 @@ Respond ONLY with valid JSON, no prose, no markdown, in exactly this shape:
       }
 
       async function fpHandleAsk() {
+        fpRegisterInteraction();
         const question = document.getElementById("fpInput").value.trim();
         if (!question) return;
         document.getElementById("fpInput").value = "";
@@ -4200,8 +4280,14 @@ Respond ONLY with valid JSON, no prose, no markdown, in exactly this shape:
       buildDD();
       updateAll();
       goPage("home");
-      openFlyout();
-      window.setTimeout(closeFlyout, 5000);
+      document.getElementById("flyoutPanel").addEventListener("pointerdown", fpRegisterInteraction);
+      document.getElementById("flyoutPanel").addEventListener("focusin", fpRegisterInteraction);
+      document.getElementById("fpInput").addEventListener("input", fpRegisterInteraction);
+      window.addEventListener("pagehide", () => {
+        clearIrisIntroTimers();
+        window.clearTimeout(irisLauncherPulseTimer);
+      }, { once: true });
+      scheduleIrisIntroduction();
     </script>
   </body>
 </html>
