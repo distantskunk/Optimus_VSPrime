@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Public Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; background: #F4F7FB; color: #0B1F3A; }
+  a { color: #505ff8; text-decoration: none; }
+  a:hover { color: #3b45d4; }
+</style>
+</helmet>
+<div style="min-height:100%;background:#F4F7FB;padding-bottom:56px;">
+
+  <!-- ============ HEADER (shared VSP) ============ -->
+  <header style="background:#142234;position:sticky;top:0;z-index:20;box-shadow:0 2px 14px rgba(20,34,52,0.22);">
+    <div style="max-width:1320px;margin:0 auto;padding:0 32px;height:76px;display:flex;align-items:center;gap:40px;">
+      <div style="display:flex;align-items:center;">
+        <img src="vsp-logo.png" alt="VSP Vision Care" style="height:46px;width:auto;display:block;filter:brightness(0) invert(1);" />
+      </div>
+      <nav style="display:flex;align-items:center;gap:4px;margin-left:8px;">
+        <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
+          <a href="#" style="{{ item.style }}">{{ item.label }}</a>
+        </sc-for>
+      </nav>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:18px;">
+        <button style="position:relative;width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,0.16);background:rgba(255,255,255,0.06);cursor:pointer;display:flex;align-items:center;justify-content:center;" style-hover="background:rgba(255,255,255,0.14);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9Z" stroke="#DDE6F0" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 21a2 2 0 0 0 4 0" stroke="#DDE6F0" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span style="position:absolute;top:8px;right:9px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#E5484D;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #142234;">2</span>
+        </button>
+        <div style="width:1px;height:28px;background:rgba(255,255,255,0.16);"></div>
+        <div style="display:flex;align-items:center;gap:11px;padding:6px 12px 6px 7px;border-radius:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(150deg,#7d88ff,#505ff8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;">ML</div>
+          <div style="display:flex;flex-direction:column;line-height:1.25;">
+            <span style="font-size:14px;font-weight:700;color:#FFFFFF;">Maria Lopez</span>
+            <span style="font-size:11.5px;font-weight:600;color:#9FB2C8;">VSP Choice</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ BODY ============ -->
+  <main style="max-width:1320px;margin:0 auto;padding:26px 32px 0;">
+
+    <!-- breadcrumb -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;font-size:12.5px;font-weight:700;color:#8296AE;">
+      <span style="display:inline-flex;align-items:center;gap:5px;color:#505ff8;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#505ff8"/></svg>
+        AI Benefits Guide
+      </span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="#B7C5D8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span style="color:#42597A;">Claims History</span>
+    </div>
+
+    <!-- title + member context -->
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+      <div>
+        <h1 style="margin:0 0 6px;font-size:30px;font-weight:900;letter-spacing:-0.8px;color:#0B1F3A;">Claims History</h1>
+        <p style="margin:0;font-size:15px;font-weight:500;color:#42597A;max-width:540px;">View recent claims, claim status, and payment details.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #E4EAF2;border-radius:14px;padding:12px 16px;box-shadow:0 4px 14px rgba(11,31,58,0.05);">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(150deg,#7d88ff,#505ff8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;">ML</div>
+        <div style="line-height:1.3;">
+          <div style="font-size:14px;font-weight:800;color:#0B1F3A;">Maria Lopez</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:2px;">
+            <span style="font-size:12px;font-weight:700;color:#3b45d4;background:#EEF1FF;padding:2px 8px;border-radius:6px;">VSP Choice</span>
+            <span style="font-size:12px;font-weight:700;color:#5B7290;">Member Only Coverage</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI guidance banner -->
+    <div style="display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,#EAF2FE,#E7ECFF);border:1px solid #D3DCFB;border-radius:16px;padding:16px 20px;margin-bottom:26px;">
+      <span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(150deg,#505ff8,#3b45d4);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 14px rgba(80,95,248,0.3);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#fff"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" fill="#BFE0FF"/></svg>
+      </span>
+      <div>
+        <div style="font-size:11px;font-weight:800;letter-spacing:0.6px;color:#3b45d4;text-transform:uppercase;margin-bottom:3px;">Recommended by Benefits Guide</div>
+        <div style="font-size:14.5px;font-weight:600;color:#28324A;line-height:1.45;">You asked about your claim history. Here are your recent claims and coverage details.</div>
+      </div>
+    </div>
+
+    <!-- summary cards -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+      <div style="background:#fff;border:1px solid #E4EAF2;border-radius:16px;padding:18px 20px;box-shadow:0 6px 20px rgba(11,31,58,0.05);display:flex;align-items:center;gap:14px;">
+        <span style="width:46px;height:46px;border-radius:12px;background:#EAF1FD;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6V3Z" stroke="#505ff8" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v4h4M9 12h6M9 15.5h6" stroke="#505ff8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div><div style="font-size:12px;font-weight:700;color:#7488A0;letter-spacing:0.2px;">Total Claims</div><div style="font-size:26px;font-weight:900;letter-spacing:-0.6px;color:#062350;">1</div></div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EAF2;border-radius:16px;padding:18px 20px;box-shadow:0 6px 20px rgba(11,31,58,0.05);display:flex;align-items:center;gap:14px;">
+        <span style="width:46px;height:46px;border-radius:12px;background:#EAF1FD;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#505ff8" stroke-width="2"/><path d="M4 9h16M8 3v4M16 3v4" stroke="#505ff8" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <div><div style="font-size:12px;font-weight:700;color:#7488A0;letter-spacing:0.2px;">Last Claim</div><div style="font-size:22px;font-weight:900;letter-spacing:-0.5px;color:#062350;">Jul 12, 2024</div></div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4EAF2;border-radius:16px;padding:18px 20px;box-shadow:0 6px 20px rgba(11,31,58,0.05);display:flex;align-items:center;gap:14px;">
+        <span style="width:46px;height:46px;border-radius:12px;background:#EAF7EE;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1FA855" stroke-width="2"/><path d="m8 12.5 2.5 2.5L16 9" stroke="#1FA855" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div><div style="font-size:12px;font-weight:700;color:#7488A0;letter-spacing:0.2px;">Status</div><div style="font-size:22px;font-weight:900;letter-spacing:-0.5px;color:#177A44;">Processed</div></div>
+      </div>
+    </div>
+
+    <!-- claims table -->
+    <div style="background:#fff;border:1px solid #E4EAF2;border-radius:18px;overflow:hidden;box-shadow:0 6px 20px rgba(11,31,58,0.05);margin-bottom:22px;">
+      <div style="display:grid;grid-template-columns:1.1fr 1.6fr 2.2fr 1fr 1fr 1.1fr;gap:12px;padding:14px 22px;background:#F7F9FC;border-bottom:1px solid #EDF1F7;font-size:11.5px;font-weight:800;letter-spacing:0.4px;color:#8296AE;text-transform:uppercase;">
+        <div>Date</div><div>Provider</div><div>Service</div><div style="text-align:right;">Plan Paid</div><div style="text-align:right;">You Paid</div><div style="text-align:right;">Status</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.1fr 1.6fr 2.2fr 1fr 1fr 1.1fr;gap:12px;padding:18px 22px;align-items:center;">
+        <div style="font-size:14px;font-weight:700;color:#0B1F3A;">Jul 12, 2024</div>
+        <div style="font-size:14px;font-weight:700;color:#0B1F3A;">Dr. Marcus Reed, OD</div>
+        <div style="font-size:13.5px;font-weight:600;color:#42597A;">WellVision Exam + Frames + Lenses</div>
+        <div style="text-align:right;font-size:15px;font-weight:900;color:#177A44;letter-spacing:-0.3px;">$338</div>
+        <div style="text-align:right;font-size:15px;font-weight:900;color:#062350;letter-spacing:-0.3px;">$74</div>
+        <div style="text-align:right;"><span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#177A44;background:#EAF7EE;border:1px solid #C6EBD3;padding:4px 11px;border-radius:999px;"><span style="width:7px;height:7px;border-radius:50%;background:#1FA855;box-shadow:0 0 0 3px rgba(31,168,85,0.18);"></span>Processed</span></div>
+      </div>
+    </div>
+
+    <!-- claim detail + quick actions -->
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start;">
+
+      <!-- claim details -->
+      <div style="background:#fff;border:1px solid #E4EAF2;border-radius:20px;padding:24px 26px 26px;box-shadow:0 6px 20px rgba(11,31,58,0.05);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:11px;">
+            <span style="width:38px;height:38px;border-radius:11px;background:#EAF1FD;display:flex;align-items:center;justify-content:center;"><svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6V3Z" stroke="#505ff8" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v4h4M9 12h6M9 15.5h6" stroke="#505ff8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <h2 style="margin:0;font-size:19px;font-weight:800;letter-spacing:-0.3px;color:#0B1F3A;">Claim Details</h2>
+          </div>
+          <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#177A44;background:#EAF7EE;border:1px solid #C6EBD3;padding:5px 12px;border-radius:999px;"><span style="width:7px;height:7px;border-radius:50%;background:#1FA855;"></span>Processed</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#EDF1F7;border:1px solid #EDF1F7;border-radius:14px;overflow:hidden;margin-bottom:20px;">
+          <sc-for list="{{ detail }}" as="d" hint-placeholder-count="6">
+            <div style="background:#fff;padding:15px 18px;">
+              <div style="font-size:11.5px;font-weight:700;letter-spacing:0.3px;color:#8296AE;text-transform:uppercase;margin-bottom:4px;">{{ d.label }}</div>
+              <div style="font-size:15.5px;font-weight:800;letter-spacing:-0.2px;color:{{ d.color }};">{{ d.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:11px;background:#F5F9FF;border:1px solid #E4EFFF;border-radius:13px;padding:14px 16px;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10" fill="#1FA855"/><path d="m8 12.5 2.5 2.5L16 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div style="font-size:14px;font-weight:600;color:#42597A;line-height:1.5;">Your claim has been completed and payment has been applied according to your VSP Choice benefits.</div>
+        </div>
+      </div>
+
+      <!-- quick actions -->
+      <aside style="background:#fff;border:1px solid #E4EAF2;border-radius:20px;padding:22px 22px 24px;box-shadow:0 6px 20px rgba(11,31,58,0.05);">
+        <div style="font-size:11px;font-weight:800;letter-spacing:0.6px;color:#8296AE;text-transform:uppercase;margin-bottom:14px;">Quick actions</div>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(150deg,#505ff8,#3b45d4);color:#fff;border:none;border-radius:12px;padding:15px 18px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(80,95,248,0.34);transition:all .14s;" style-hover="filter:brightness(1.06);transform:translateY(-1px);" style-active="transform:translateY(1px);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="m8.5 12 2.4 2.4L16 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            View Benefits
+          </button>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:9px;background:#fff;color:#3b45d4;border:1.5px solid #C7CEFB;border-radius:12px;padding:15px 18px;font-size:15px;font-weight:800;cursor:pointer;transition:all .14s;" style-hover="background:#EEF1FF;border-color:#505ff8;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z" stroke="#3b45d4" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" fill="#3b45d4"/></svg>
+            Find Doctor
+          </button>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:9px;background:#fff;color:#3b45d4;border:1.5px solid #C7CEFB;border-radius:12px;padding:15px 18px;font-size:15px;font-weight:800;cursor:pointer;transition:all .14s;" style-hover="background:#EEF1FF;border-color:#505ff8;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 3h12v18l-3-1.8L12 21l-3-1.8L6 21V3Z" stroke="#3b45d4" stroke-width="2" stroke-linejoin="round"/><path d="M9 8h6M9 12h6" stroke="#3b45d4" stroke-width="2" stroke-linecap="round"/></svg>
+            Reimbursement Help
+          </button>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:980}}">
+class Component extends DCLogic {
+  navItem(label, active) {
+    const base = 'padding:10px 15px;border-radius:10px;font-size:14.5px;font-weight:700;letter-spacing:-0.1px;cursor:pointer;';
+    return { label, style: base + (active ? 'color:#FFFFFF;background:rgba(255,255,255,0.12);' : 'color:#C3D0E0;background:transparent;') };
+  }
+  renderVals() {
+    return {
+      nav: [
+        this.navItem('Find Doctor', false),
+        this.navItem('Benefits', false),
+        this.navItem('Claims', true),
+        this.navItem('ID Card', false),
+        this.navItem('Account', false),
+      ],
+      detail: [
+        { label: 'Provider', value: 'Dr. Marcus Reed, OD', color: '#0B1F3A' },
+        { label: 'Date', value: 'Jul 12, 2024', color: '#0B1F3A' },
+        { label: 'Claim Type', value: 'Vision Exam and Materials', color: '#0B1F3A' },
+        { label: 'Status', value: 'Processed', color: '#177A44' },
+        { label: 'Plan Contribution', value: '$338', color: '#177A44' },
+        { label: 'Member Responsibility', value: '$74', color: '#062350' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

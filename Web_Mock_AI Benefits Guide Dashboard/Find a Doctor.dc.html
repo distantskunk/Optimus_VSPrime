@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Public Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; background: #F4F7FB; color: #0B1F3A; }
+  a { color: #505ff8; text-decoration: none; }
+  a:hover { color: #3b45d4; }
+</style>
+</helmet>
+<div style="min-height:100%;background:#F4F7FB;padding-bottom:56px;">
+
+  <!-- ============ HEADER (shared VSP) ============ -->
+  <header style="background:#142234;position:sticky;top:0;z-index:20;box-shadow:0 2px 14px rgba(20,34,52,0.22);">
+    <div style="max-width:1320px;margin:0 auto;padding:0 32px;height:76px;display:flex;align-items:center;gap:40px;">
+      <div style="display:flex;align-items:center;">
+        <img src="vsp-logo.png" alt="VSP Vision Care" style="height:46px;width:auto;display:block;filter:brightness(0) invert(1);" />
+      </div>
+      <nav style="display:flex;align-items:center;gap:4px;margin-left:8px;">
+        <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
+          <a href="#" style="{{ item.style }}">{{ item.label }}</a>
+        </sc-for>
+      </nav>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:18px;">
+        <button style="position:relative;width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,0.16);background:rgba(255,255,255,0.06);cursor:pointer;display:flex;align-items:center;justify-content:center;" style-hover="background:rgba(255,255,255,0.14);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9Z" stroke="#DDE6F0" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 21a2 2 0 0 0 4 0" stroke="#DDE6F0" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span style="position:absolute;top:8px;right:9px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#E5484D;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #142234;">2</span>
+        </button>
+        <div style="width:1px;height:28px;background:rgba(255,255,255,0.16);"></div>
+        <div style="display:flex;align-items:center;gap:11px;padding:6px 12px 6px 7px;border-radius:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(150deg,#7d88ff,#505ff8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;">ML</div>
+          <div style="display:flex;flex-direction:column;line-height:1.25;">
+            <span style="font-size:14px;font-weight:700;color:#FFFFFF;">Maria Lopez</span>
+            <span style="font-size:11.5px;font-weight:600;color:#9FB2C8;">VSP Choice</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ BODY ============ -->
+  <main style="max-width:1320px;margin:0 auto;padding:26px 32px 0;">
+
+    <!-- breadcrumb: reinforce the flow -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;font-size:12.5px;font-weight:700;color:#8296AE;">
+      <span style="display:inline-flex;align-items:center;gap:5px;color:#505ff8;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#505ff8"/></svg>
+        AI Benefits Guide
+      </span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="#B7C5D8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span style="color:#42597A;">Find a Doctor</span>
+    </div>
+
+    <!-- title + member context -->
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+      <div>
+        <h1 style="margin:0 0 6px;font-size:30px;font-weight:900;letter-spacing:-0.8px;color:#0B1F3A;">Find a Doctor</h1>
+        <p style="margin:0;font-size:15px;font-weight:500;color:#42597A;max-width:520px;">In-network providers based on your selected plan and location.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #E4EAF2;border-radius:14px;padding:12px 16px;box-shadow:0 4px 14px rgba(11,31,58,0.05);">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(150deg,#7d88ff,#505ff8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;">ML</div>
+        <div style="line-height:1.3;">
+          <div style="font-size:14px;font-weight:800;color:#0B1F3A;">Maria Lopez</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:2px;">
+            <span style="font-size:12px;font-weight:700;color:#3b45d4;background:#EEF1FF;padding:2px 8px;border-radius:6px;">VSP Choice</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:#177A44;"><span style="width:7px;height:7px;border-radius:50%;background:#1FA855;"></span>Frame benefit available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI guidance banner -->
+    <div style="position:relative;overflow:hidden;display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,#EAF2FE,#E7ECFF);border:1px solid #D3DCFB;border-radius:16px;padding:16px 20px;margin-bottom:22px;">
+      <span style="width:42px;height:42px;border-radius:12px;background:linear-gradient(150deg,#505ff8,#3b45d4);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 14px rgba(80,95,248,0.3);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#fff"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" fill="#BFE0FF"/></svg>
+      </span>
+      <div>
+        <div style="font-size:11px;font-weight:800;letter-spacing:0.6px;color:#3b45d4;text-transform:uppercase;margin-bottom:3px;">Recommended by Benefits Guide</div>
+        <div style="font-size:14.5px;font-weight:600;color:#28324A;line-height:1.45;">Based on your VSP Choice plan, these providers are in network and available near you.</div>
+      </div>
+    </div>
+
+    <!-- filter chips -->
+    <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:22px;">
+      <button style="display:inline-flex;align-items:center;gap:7px;background:#505ff8;border:1px solid #505ff8;color:#fff;font-size:13px;font-weight:700;padding:9px 14px;border-radius:999px;cursor:pointer;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        In network
+      </button>
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+        <button style="background:#FFFFFF;border:1px solid #E1E8F2;color:#42597A;font-size:13px;font-weight:700;padding:9px 14px;border-radius:999px;cursor:pointer;transition:all .14s;" style-hover="border-color:#505ff8;color:#505ff8;background:#F4F6FF;">{{ f }}</button>
+      </sc-for>
+    </div>
+
+    <!-- results count -->
+    <div style="font-size:13px;font-weight:700;color:#8296AE;margin-bottom:14px;">3 in-network providers near <span style="color:#42597A;">Chicago, IL</span></div>
+
+    <!-- ===== PROVIDER CARDS ===== -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Card 1 — RECOMMENDED -->
+      <div style="position:relative;display:flex;gap:22px;background:linear-gradient(135deg,#F4F7FF,#EEF1FF);border:1.5px solid #C7CEFB;border-radius:18px;padding:22px 24px;box-shadow:0 14px 34px rgba(80,95,248,0.14);flex-wrap:wrap;">
+        <span style="position:absolute;top:-11px;left:22px;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(150deg,#505ff8,#3b45d4);color:#fff;font-size:11.5px;font-weight:800;letter-spacing:0.3px;padding:5px 12px;border-radius:999px;box-shadow:0 6px 14px rgba(80,95,248,0.35);">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#fff"/></svg>
+          Recommended
+        </span>
+        <div style="width:64px;height:64px;border-radius:16px;background:#fff;border:1px solid #D3DCFB;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(80,95,248,0.12);">
+          <span style="font-size:20px;font-weight:900;color:#505ff8;letter-spacing:-0.5px;">RT</span>
+        </div>
+        <div style="flex:1;min-width:220px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
+            <h3 style="margin:0;font-size:19px;font-weight:800;letter-spacing:-0.3px;color:#0B1F3A;">Dr. Rachel Torres, OD</h3>
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#177A44;background:#EAF7EE;border:1px solid #C6EBD3;padding:3px 10px;border-radius:999px;"><span style="width:7px;height:7px;border-radius:50%;background:#1FA855;box-shadow:0 0 0 3px rgba(31,168,85,0.18);"></span>In network</span>
+          </div>
+          <div style="font-size:13.5px;font-weight:600;color:#6B7F98;margin-bottom:10px;">Private practice</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px 22px;">
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#42597A;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z" stroke="#8296AE" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.2" fill="#8296AE"/></svg>225 N Michigan Ave, Chicago</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#42597A;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8296AE" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="#8296AE" stroke-width="1.8" stroke-linecap="round"/></svg>0.4 miles away</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:#177A44;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#1FA855" stroke-width="1.8"/><path d="M4 9h16M8 3v4M16 3v4" stroke="#1FA855" stroke-width="1.8" stroke-linecap="round"/></svg>Next available Tuesday</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:180px;">
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(150deg,#505ff8,#3b45d4);color:#fff;border:none;border-radius:12px;padding:14px 18px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(80,95,248,0.34);transition:all .14s;" style-hover="filter:brightness(1.06);transform:translateY(-1px);" style-active="transform:translateY(1px);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#fff" stroke-width="2"/><path d="M4 9h16M8 3v4M16 3v4M9 13.5l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Book Appointment
+          </button>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:#3b45d4;border:1.5px solid #C7CEFB;border-radius:12px;padding:14px 18px;font-size:15px;font-weight:800;cursor:pointer;transition:all .14s;" style-hover="background:#EEF1FF;border-color:#505ff8;">View Details</button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="display:flex;gap:22px;background:#fff;border:1px solid #E4EAF2;border-radius:18px;padding:22px 24px;box-shadow:0 6px 20px rgba(11,31,58,0.05);flex-wrap:wrap;">
+        <div style="width:64px;height:64px;border-radius:16px;background:#F4F7FC;border:1px solid #E4EAF2;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-size:20px;font-weight:900;color:#5B7290;letter-spacing:-0.5px;">MR</span>
+        </div>
+        <div style="flex:1;min-width:220px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
+            <h3 style="margin:0;font-size:19px;font-weight:800;letter-spacing:-0.3px;color:#0B1F3A;">Dr. Marcus Reed, OD</h3>
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#177A44;background:#EAF7EE;border:1px solid #C6EBD3;padding:3px 10px;border-radius:999px;"><span style="width:7px;height:7px;border-radius:50%;background:#1FA855;box-shadow:0 0 0 3px rgba(31,168,85,0.18);"></span>In network</span>
+          </div>
+          <div style="font-size:13.5px;font-weight:600;color:#6B7F98;margin-bottom:10px;">Private practice</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px 22px;">
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#42597A;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z" stroke="#8296AE" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.2" fill="#8296AE"/></svg>1030 W Randolph St, Chicago</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#42597A;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8296AE" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="#8296AE" stroke-width="1.8" stroke-linecap="round"/></svg>1.1 miles away</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:#177A44;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#1FA855" stroke-width="1.8"/><path d="M4 9h16M8 3v4M16 3v4" stroke="#1FA855" stroke-width="1.8" stroke-linecap="round"/></svg>Next available Thursday</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:180px;">
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(150deg,#505ff8,#3b45d4);color:#fff;border:none;border-radius:12px;padding:14px 18px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(80,95,248,0.34);transition:all .14s;" style-hover="filter:brightness(1.06);transform:translateY(-1px);" style-active="transform:translateY(1px);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#fff" stroke-width="2"/><path d="M4 9h16M8 3v4M16 3v4M9 13.5l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Book Appointment
+          </button>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:#3b45d4;border:1.5px solid #C7CEFB;border-radius:12px;padding:14px 18px;font-size:15px;font-weight:800;cursor:pointer;transition:all .14s;" style-hover="background:#EEF1FF;border-color:#505ff8;">View Details</button>
+        </div>
+      </div>
+
+      <!-- Card 3 — Retail -->
+      <div style="display:flex;gap:22px;background:#fff;border:1px solid #E4EAF2;border-radius:18px;padding:22px 24px;box-shadow:0 6px 20px rgba(11,31,58,0.05);flex-wrap:wrap;">
+        <div style="width:64px;height:64px;border-radius:16px;background:#F4F7FC;border:1px solid #E4EAF2;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 8h16l-1 12H5L4 8Z" stroke="#5B7290" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 8V6a4 4 0 0 1 8 0v2" stroke="#5B7290" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div style="flex:1;min-width:220px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
+            <h3 style="margin:0;font-size:19px;font-weight:800;letter-spacing:-0.3px;color:#0B1F3A;">Costco Optical — Lincoln Park</h3>
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#177A44;background:#EAF7EE;border:1px solid #C6EBD3;padding:3px 10px;border-radius:999px;"><span style="width:7px;height:7px;border-radius:50%;background:#1FA855;box-shadow:0 0 0 3px rgba(31,168,85,0.18);"></span>In network</span>
+            <span style="font-size:12px;font-weight:700;color:#5B7290;background:#EEF2F7;padding:3px 10px;border-radius:999px;">Retail</span>
+          </div>
+          <div style="font-size:13.5px;font-weight:600;color:#6B7F98;margin-bottom:10px;">Retail location</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px 22px;">
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#42597A;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z" stroke="#8296AE" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.2" fill="#8296AE"/></svg>2746 N Clybourn Ave, Chicago</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:#42597A;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8296AE" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="#8296AE" stroke-width="1.8" stroke-linecap="round"/></svg>3.2 miles away</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:#177A44;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#1FA855" stroke-width="1.8"/><path d="M4 9h16M8 3v4M16 3v4" stroke="#1FA855" stroke-width="1.8" stroke-linecap="round"/></svg>Next available Friday</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:180px;">
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(150deg,#505ff8,#3b45d4);color:#fff;border:none;border-radius:12px;padding:14px 18px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(80,95,248,0.34);transition:all .14s;" style-hover="filter:brightness(1.06);transform:translateY(-1px);" style-active="transform:translateY(1px);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" fill="#fff"/></svg>
+            View Location
+          </button>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:#3b45d4;border:1.5px solid #C7CEFB;border-radius:12px;padding:14px 18px;font-size:15px;font-weight:800;cursor:pointer;transition:all .14s;" style-hover="background:#EEF1FF;border-color:#505ff8;">View Details</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:980}}">
+class Component extends DCLogic {
+  navItem(label, active) {
+    const base = 'padding:10px 15px;border-radius:10px;font-size:14.5px;font-weight:700;letter-spacing:-0.1px;cursor:pointer;';
+    return { label, style: base + (active ? 'color:#FFFFFF;background:rgba(255,255,255,0.12);' : 'color:#C3D0E0;background:transparent;') };
+  }
+  renderVals() {
+    return {
+      nav: [
+        this.navItem('Find Doctor', true),
+        this.navItem('Benefits', false),
+        this.navItem('Claims', false),
+        this.navItem('ID Card', false),
+        this.navItem('Account', false),
+      ],
+      filters: ['Near me', 'Available soon', 'Private practice', 'Retail locations'],
+    };
+  }
+}
+</script>
+</body>
+</html>

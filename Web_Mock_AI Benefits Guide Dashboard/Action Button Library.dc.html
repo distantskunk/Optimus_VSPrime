@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Public Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; background: #F4F7FB; color: #0B1F3A; }
+  a { color: #505ff8; text-decoration: none; }
+  a:hover { color: #3b45d4; }
+</style>
+</helmet>
+<div style="max-width:1080px;margin:0 auto;padding:44px 40px 72px;">
+
+  <!-- intro -->
+  <div style="margin-bottom:8px;font-size:12px;font-weight:800;letter-spacing:0.7px;color:#8296AE;text-transform:uppercase;">VSP · AI Benefits Guide</div>
+  <h1 style="margin:0 0 8px;font-size:32px;font-weight:900;letter-spacing:-0.8px;color:#0B1F3A;">Action Button Library</h1>
+  <p style="margin:0 0 14px;font-size:15px;font-weight:500;line-height:1.55;color:#42597A;max-width:640px;">The reusable next-step controls the Benefits Guide uses to move members from an answer to a task. Every response card ends with one <strong>primary</strong> action and, optionally, one <strong>secondary</strong> action.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:38px;">
+    <sc-for list="{{ pattern }}" as="p" hint-placeholder-count="4">
+      <span style="display:inline-flex;align-items:center;gap:7px;background:#EEF1FF;border:1px solid #D7DCFD;color:#3b45d4;font-size:12.5px;font-weight:800;padding:7px 13px;border-radius:999px;">
+        <span style="width:20px;height:20px;border-radius:50%;background:#505ff8;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;">{{ p.n }}</span>
+        {{ p.label }}
+      </span>
+    </sc-for>
+  </div>
+
+  <!-- 1. Primary examples -->
+  <section style="background:#fff;border:1px solid #E4EAF2;border-radius:20px;padding:26px 28px;margin-bottom:22px;box-shadow:0 6px 20px rgba(11,31,58,0.05);">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:5px;">
+      <h2 style="margin:0;font-size:19px;font-weight:800;letter-spacing:-0.3px;">Primary actions</h2>
+      <span style="font-size:12.5px;font-weight:700;color:#8296AE;">Recommended next step · one per card</span>
+    </div>
+    <p style="margin:0 0 20px;font-size:13.5px;font-weight:500;color:#6B7F98;">VSP blue gradient, white text, elevated, left icon. Hover lifts; pressed settles.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;">
+      <sc-for list="{{ actions }}" as="a" hint-placeholder-count="7">
+        <dc-import name="ActionButton" action="{{ a.key }}" variant="primary" hint-size="190px,52px"></dc-import>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- 2. Secondary examples -->
+  <section style="background:#fff;border:1px solid #E4EAF2;border-radius:20px;padding:26px 28px;margin-bottom:22px;box-shadow:0 6px 20px rgba(11,31,58,0.05);">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:5px;">
+      <h2 style="margin:0;font-size:19px;font-weight:800;letter-spacing:-0.3px;">Secondary actions</h2>
+      <span style="font-size:12.5px;font-weight:700;color:#8296AE;">Alternative action · optional</span>
+    </div>
+    <p style="margin:0 0 20px;font-size:13.5px;font-weight:500;color:#6B7F98;">White background, blue border and text, lighter emphasis, left icon. Hover fills a soft blue.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;">
+      <sc-for list="{{ actions }}" as="a" hint-placeholder-count="7">
+        <dc-import name="ActionButton" action="{{ a.key }}" variant="secondary" hint-size="190px,52px"></dc-import>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- 3. Pairing rules -->
+  <section style="background:#fff;border:1px solid #E4EAF2;border-radius:20px;padding:26px 28px;margin-bottom:22px;box-shadow:0 6px 20px rgba(11,31,58,0.05);">
+    <h2 style="margin:0 0 5px;font-size:19px;font-weight:800;letter-spacing:-0.3px;">Pairing</h2>
+    <p style="margin:0 0 20px;font-size:13.5px;font-weight:500;color:#6B7F98;">One primary, one optional secondary — primary always leads (left).</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <sc-for list="{{ pairs }}" as="pr" hint-placeholder-count="2">
+        <div style="border:1px solid #E8EDF5;border-radius:14px;padding:16px;background:#FAFBFE;">
+          <div style="font-size:11px;font-weight:800;letter-spacing:0.5px;color:#8296AE;text-transform:uppercase;margin-bottom:12px;">{{ pr.title }}</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <dc-import name="ActionButton" action="{{ pr.primary }}" variant="primary" hint-size="180px,52px"></dc-import>
+            <dc-import name="ActionButton" action="{{ pr.secondary }}" variant="secondary" hint-size="180px,52px"></dc-import>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:22px;align-items:start;">
+    <!-- 4. In-context usage -->
+    <section style="background:#fff;border:1px solid #E4EAF2;border-radius:20px;padding:26px 28px;box-shadow:0 6px 20px rgba(11,31,58,0.05);">
+      <h2 style="margin:0 0 5px;font-size:19px;font-weight:800;letter-spacing:-0.3px;">In a response card</h2>
+      <p style="margin:0 0 18px;font-size:13.5px;font-weight:500;color:#6B7F98;">Where the buttons live at the end of guidance.</p>
+      <div style="border:1px solid #E1E8F5;border-radius:16px;overflow:hidden;box-shadow:0 8px 22px rgba(11,31,58,0.07);">
+        <div style="display:flex;align-items:center;gap:9px;padding:13px 15px;background:linear-gradient(90deg,#F2F8FF,#EAF1FF);border-bottom:1px solid #E1E8F5;">
+          <span style="width:28px;height:28px;border-radius:8px;background:linear-gradient(150deg,#505ff8,#3b45d4);display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#fff"/></svg></span>
+          <span style="font-size:13.5px;font-weight:800;color:#0B1F3A;">AI Benefits Guide</span>
+          <span style="margin-left:auto;font-size:11px;font-weight:800;color:#1FA855;background:#EAF7EE;border:1px solid #C6EBD3;padding:3px 9px;border-radius:999px;">Verified</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.5px;color:#8296AE;text-transform:uppercase;margin-bottom:6px;">Answer</div>
+          <div style="font-size:15.5px;font-weight:800;color:#0B1F3A;margin-bottom:16px;line-height:1.4;">Yes — you're due for new glasses.</div>
+          <div style="display:flex;align-items:flex-start;gap:9px;background:#EEF1FF;border:1px solid #D7DCFD;border-radius:12px;padding:11px 13px;margin-bottom:16px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z" stroke="#505ff8" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.2" fill="#505ff8"/></svg>
+            <div><div style="font-size:10px;font-weight:800;letter-spacing:0.5px;color:#505ff8;text-transform:uppercase;margin-bottom:1px;">Recommended next step</div><div style="font-size:13.5px;font-weight:700;color:#28324A;">Find an in-network doctor.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <dc-import name="ActionButton" action="find-doctor" variant="primary" hint-size="170px,52px"></dc-import>
+            <dc-import name="ActionButton" action="view-benefits" variant="secondary" hint-size="170px,52px"></dc-import>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Escalation -->
+    <section style="background:#fff;border:1px solid #E4EAF2;border-radius:20px;padding:26px 28px;box-shadow:0 6px 20px rgba(11,31,58,0.05);">
+      <h2 style="margin:0 0 5px;font-size:19px;font-weight:800;letter-spacing:-0.3px;">Escalation state</h2>
+      <p style="margin:0 0 18px;font-size:13.5px;font-weight:500;color:#6B7F98;">When the Guide hands off to a person.</p>
+      <div style="border:1px solid #FBE3C4;border-radius:16px;overflow:hidden;box-shadow:0 8px 22px rgba(11,31,58,0.07);">
+        <div style="display:flex;align-items:center;gap:9px;padding:13px 15px;background:linear-gradient(90deg,#FFF7EC,#FFF1DE);border-bottom:1px solid #FBE3C4;">
+          <span style="width:28px;height:28px;border-radius:8px;background:#F5A623;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3L12 3Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg></span>
+          <span style="font-size:13.5px;font-weight:800;color:#0B1F3A;">Needs a specialist</span>
+          <span style="margin-left:auto;font-size:11px;font-weight:800;color:#B26A00;background:#FDEED3;border:1px solid #F6D79C;padding:3px 9px;border-radius:999px;">Escalate</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:14px;font-weight:600;color:#42597A;line-height:1.5;margin-bottom:16px;">This question is best handled by a VSP specialist. You can connect now or book a time that works.</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <dc-import name="ActionButton" action="contact-support" variant="primary" hint-size="180px,52px"></dc-import>
+            <dc-import name="ActionButton" action="schedule-callback" variant="secondary" hint-size="180px,52px"></dc-import>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1080,&quot;height&quot;:1400}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      pattern: [
+        { n: '1', label: 'Interpret' },
+        { n: '2', label: 'Answer' },
+        { n: '3', label: 'Guide' },
+        { n: '4', label: 'Escalate' },
+      ],
+      actions: [
+        { key: 'find-doctor' }, { key: 'view-benefits' }, { key: 'view-id-card' },
+        { key: 'claims-history' }, { key: 'reimbursement-help' }, { key: 'billing-actions' },
+        { key: 'contact-support' },
+      ],
+      pairs: [
+        { title: 'Coverage question', primary: 'find-doctor', secondary: 'view-benefits' },
+        { title: 'Claims question', primary: 'claims-history', secondary: 'reimbursement-help' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

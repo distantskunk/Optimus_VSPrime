@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Public Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; background: #F4F7FB; color: #0B1F3A; }
+  a { color: #505ff8; text-decoration: none; }
+  a:hover { color: #3b45d4; }
+  @keyframes sheen { 0% { transform: translateX(-120%); } 100% { transform: translateX(220%); } }
+  @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+</style>
+</helmet>
+<div style="min-height:100%;background:#F4F7FB;padding-bottom:56px;">
+
+  <!-- ============ HEADER ============ -->
+  <header style="background:#142234;position:sticky;top:0;z-index:20;box-shadow:0 2px 14px rgba(20,34,52,0.22);">
+    <div style="max-width:1320px;margin:0 auto;padding:0 32px;height:76px;display:flex;align-items:center;gap:40px;">
+      <!-- Logo -->
+      <div style="display:flex;align-items:center;">
+        <img src="vsp-logo.png" alt="VSP Vision Care" style="height:46px;width:auto;display:block;filter:brightness(0) invert(1);" />
+      </div>
+
+      <!-- Center nav -->
+      <nav style="display:flex;align-items:center;gap:4px;margin-left:8px;">
+        <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
+          <a href="#" onClick="{{ item.onClick }}" style="{{ item.style }}">
+            {{ item.label }}
+          </a>
+        </sc-for>
+      </nav>
+
+      <!-- Right cluster -->
+      <div style="margin-left:auto;display:flex;align-items:center;gap:18px;">
+        <button style="position:relative;width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,0.16);background:rgba(255,255,255,0.06);cursor:pointer;display:flex;align-items:center;justify-content:center;" style-hover="background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.3);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9Z" stroke="#DDE6F0" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 21a2 2 0 0 0 4 0" stroke="#DDE6F0" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span style="position:absolute;top:8px;right:9px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#E5484D;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #142234;">2</span>
+        </button>
+        <div style="width:1px;height:28px;background:rgba(255,255,255,0.16);"></div>
+
+        <!-- Demo member selector -->
+        <div style="position:relative;">
+          <div style="font-size:9.5px;font-weight:800;letter-spacing:0.9px;color:#7E93AC;text-transform:uppercase;margin-bottom:4px;padding-left:2px;">Demo Persona</div>
+          <button onClick="{{ toggleDropdown }}" style="display:flex;align-items:center;gap:11px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);cursor:pointer;padding:6px 12px 6px 7px;border-radius:12px;transition:all .14s;" style-hover="background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.34);">
+            <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(150deg,#7d88ff,#505ff8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;box-shadow:0 4px 10px rgba(80,95,248,0.35);">{{ selectedInitials }}</div>
+            <div style="display:flex;flex-direction:column;line-height:1.25;text-align:left;">
+              <span style="font-size:14px;font-weight:700;color:#FFFFFF;">{{ selectedName }}</span>
+              <span style="font-size:11.5px;font-weight:600;color:#9FB2C8;">{{ selectedPlan }}</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-left:2px;"><path d="m6 9 6 6 6-6" stroke="#9FB2C8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <sc-if value="{{ dropdownOpen }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;top:calc(100% + 12px);right:0;width:314px;background:#FFFFFF;border:1px solid #E4EAF2;border-radius:16px;box-shadow:0 26px 60px rgba(20,34,52,0.28);overflow:hidden;z-index:50;">
+            <div style="padding:12px 16px;border-bottom:1px solid #EDF1F7;background:#F7F9FC;">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:0.7px;color:#8296AE;text-transform:uppercase;">Demo Member</div>
+              <div style="font-size:12px;font-weight:600;color:#7488A0;margin-top:2px;">Switch personas to see tailored guidance</div>
+            </div>
+            <div style="padding:6px;display:flex;flex-direction:column;gap:1px;">
+              <sc-for list="{{ personas }}" as="p" hint-placeholder-count="6">
+                <button onClick="{{ p.onClick }}" style="{{ p.rowStyle }}" style-hover="background:#F1F4FF;">
+                  <span style="{{ p.avatarStyle }}">{{ p.initials }}</span>
+                  <span style="flex:1;min-width:0;text-align:left;">
+                    <span style="display:block;font-size:14px;font-weight:700;color:#0B1F3A;">{{ p.name }}</span>
+                    <span style="display:block;font-size:11.5px;font-weight:600;color:#8296AE;">{{ p.plan }}</span>
+                  </span>
+                  <sc-if value="{{ p.selected }}" hint-placeholder-val="{{ false }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><circle cx="12" cy="12" r="10" fill="#505ff8"/><path d="m8 12.5 2.5 2.5L16 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </sc-if>
+                </button>
+              </sc-for>
+            </div>
+            <!-- Demo personalization mini examples -->
+            <div style="padding:13px 15px 15px;border-top:1px solid #EDF1F7;background:linear-gradient(180deg,#F6F8FF,#EDF0FF);">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#505ff8"/></svg>
+                <span style="font-size:10.5px;font-weight:800;letter-spacing:0.7px;color:#505ff8;text-transform:uppercase;">Demo Personalization</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:7px;">
+                <sc-for list="{{ examples }}" as="e" hint-placeholder-count="5">
+                  <div style="display:flex;align-items:baseline;gap:9px;">
+                    <span style="font-size:12.5px;font-weight:800;color:#3b45d4;min-width:52px;">{{ e.name }}</span>
+                    <span style="font-size:12.5px;font-weight:600;color:#42597A;line-height:1.35;">{{ e.scenario }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ BODY ============ -->
+  <main style="max-width:1320px;margin:0 auto;padding:34px 32px 0;">
+
+    <!-- breadcrumb / page title row -->
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;">
+      <div>
+        <div style="font-size:12.5px;font-weight:700;letter-spacing:0.4px;color:#8296AE;text-transform:uppercase;margin-bottom:6px;">Member Dashboard</div>
+        <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-0.6px;color:#0B1F3A;">Overview</h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;background:#EAF7EE;border:1px solid #C6EBD3;padding:9px 15px;border-radius:999px;">
+        <span style="width:9px;height:9px;border-radius:50%;background:#1FA855;box-shadow:0 0 0 3px rgba(31,168,85,0.18);"></span>
+        <span style="font-size:13px;font-weight:700;color:#177A44;">Coverage Active · Plan Year 2026</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 396px;gap:26px;align-items:start;">
+
+      <!-- ===== LEFT COLUMN ===== -->
+      <div style="display:flex;flex-direction:column;gap:26px;min-width:0;">
+
+        <!-- HERO welcome card -->
+        <section style="position:relative;overflow:hidden;background:linear-gradient(135deg,#EAF2FE 0%,#E3EEFC 55%,#DCE9FB 100%);border:1px solid #D3E2F7;border-radius:22px;padding:30px 32px 28px;box-shadow:0 14px 34px rgba(80,95,248,0.07);">
+          <div style="position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(80,95,248,0.10),transparent 70%);"></div>
+          <div style="position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                <span style="display:inline-flex;align-items:center;gap:6px;background:#FFFFFF;border:1px solid #CFE0F7;color:#505ff8;font-size:12px;font-weight:800;letter-spacing:0.3px;padding:6px 12px;border-radius:999px;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2 15 9l7 .6-5.3 4.6L18.3 21 12 17.3 5.7 21l1.6-6.8L2 9.6 9 9Z" fill="#F5A623"/></svg>
+                  Returning Member
+                </span>
+                <span style="background:#3b45d4;color:#fff;font-size:12px;font-weight:800;letter-spacing:0.3px;padding:6px 12px;border-radius:999px;">VSP Choice Plan</span>
+              </div>
+              <h2 style="margin:0 0 6px;font-size:34px;font-weight:900;letter-spacing:-1px;color:#062350;">Welcome back, Maria</h2>
+              <p style="margin:0;font-size:15px;font-weight:500;color:#42597A;max-width:440px;">Your vision benefits are active and ready to use. Here's a quick look at what's available this plan year.</p>
+              <div style="margin-top:16px;display:flex;align-items:flex-start;gap:11px;background:#FFFFFF;border:1px solid #D3E2F7;border-radius:13px;padding:12px 15px;max-width:470px;box-shadow:0 5px 14px rgba(80,95,248,0.07);">
+                <span style="width:30px;height:30px;border-radius:9px;background:#EAF1FD;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#505ff8" stroke-width="2"/><path d="M12 8v4" stroke="#505ff8" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.2" fill="#505ff8"/></svg>
+                </span>
+                <div>
+                  <div style="font-size:10.5px;font-weight:800;letter-spacing:0.6px;color:#505ff8;text-transform:uppercase;margin-bottom:2px;">Current Member Scenario</div>
+                  <div style="font-size:13.5px;font-weight:600;color:#33475B;line-height:1.42;">Thinks she's due for new glasses and wants to understand what's covered.</div>
+                </div>
+              </div>
+            </div>
+            <div style="width:96px;height:96px;border-radius:20px;background:#fff;border:1px solid #D3E2F7;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(80,95,248,0.1);flex-shrink:0;">
+              <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(150deg,#4C8DFF,#3b45d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:26px;">ML</div>
+            </div>
+          </div>
+
+          <!-- benefit summary cards -->
+          <div style="position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px;">
+            <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="4">
+              <div style="background:#FFFFFF;border:1px solid #E1EAF6;border-radius:16px;padding:16px 16px 15px;box-shadow:0 4px 14px rgba(11,31,58,0.04);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                  <span style="{{ b.iconWrap }}">{{ b.icon }}</span>
+                </div>
+                <div style="font-size:12px;font-weight:700;color:#7488A0;letter-spacing:0.2px;margin-bottom:3px;">{{ b.label }}</div>
+                <div style="font-size:23px;font-weight:900;letter-spacing:-0.6px;color:{{ b.valueColor }};">{{ b.value }}</div>
+                <div style="font-size:12px;font-weight:600;color:#93A4BC;margin-top:2px;">{{ b.sub }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <!-- QUICK ACTIONS -->
+        <section>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:15px;">
+            <h3 style="margin:0;font-size:18px;font-weight:800;letter-spacing:-0.3px;color:#0B1F3A;">Quick actions</h3>
+            <span style="font-size:13px;font-weight:600;color:#8296AE;">What members use most</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <sc-for list="{{ actions }}" as="a" hint-placeholder-count="4">
+              <button onClick="{{ a.onClick }}" style="text-align:left;display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #E4EAF2;border-radius:18px;padding:20px 20px;cursor:pointer;transition:all .16s ease;box-shadow:0 3px 12px rgba(11,31,58,0.04);" style-hover="border-color:#B9D2F6;box-shadow:0 12px 26px rgba(80,95,248,0.12);transform:translateY(-2px);">
+                <span style="width:52px;height:52px;border-radius:14px;background:{{ a.iconBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ a.icon }}</span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:block;font-size:16.5px;font-weight:800;color:#0B1F3A;letter-spacing:-0.3px;">{{ a.title }}</span>
+                  <span style="display:block;font-size:13px;font-weight:500;color:#7488A0;margin-top:2px;">{{ a.sub }}</span>
+                </span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="#B7C5D8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </sc-for>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ===== RIGHT COLUMN ===== -->
+      <aside style="display:flex;flex-direction:column;gap:20px;">
+
+        <!-- AI BENEFITS GUIDE PANEL -->
+        <section style="position:relative;overflow:hidden;border-radius:22px;padding:26px 24px 24px;background:linear-gradient(155deg,#0A63E4 0%,#0146B0 48%,#01245E 100%);box-shadow:0 20px 44px rgba(80,95,248,0.34);">
+          <div style="position:absolute;inset:0;background:radial-gradient(120px 120px at 82% 14%,rgba(255,255,255,0.22),transparent 70%),radial-gradient(160px 160px at 12% 88%,rgba(90,170,255,0.35),transparent 70%);"></div>
+          <div style="position:relative;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+              <span style="width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.28);display:flex;align-items:center;justify-content:center;animation:floaty 4s ease-in-out infinite;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#fff"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" fill="#BFE0FF"/></svg>
+              </span>
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:19px;font-weight:900;color:#fff;letter-spacing:-0.3px;">AI Benefits Guide</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px;">
+                  <span style="font-size:11px;font-weight:800;letter-spacing:0.6px;color:#BFE0FF;background:rgba(255,255,255,0.12);padding:2px 8px;border-radius:6px;">POWERED BY VSP AI</span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:#062350;background:#BFE0FF;padding:3px 9px;border-radius:999px;">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#062350"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="#062350"/></svg>
+                    Personalized for {{ selectedName }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <p style="margin:0 0 6px;font-size:16px;font-weight:800;color:#fff;">Need help understanding your benefits?</p>
+            <p style="margin:0 0 20px;font-size:14px;font-weight:500;line-height:1.55;color:#D3E6FF;">Get personalized answers, coverage guidance, provider recommendations, and next-step support — instantly.</p>
+            <button onClick="{{ openGuide }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:#fff;color:#0146B0;border:none;border-radius:13px;padding:15px;font-size:15.5px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.18);transition:transform .14s ease;" style-hover="transform:translateY(-2px);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z" fill="#0146B0"/></svg>
+              Open Benefits Guide
+            </button>
+            <div style="display:flex;align-items:center;gap:7px;justify-content:center;margin-top:13px;">
+              <span style="width:7px;height:7px;border-radius:50%;background:#5CE29B;box-shadow:0 0 0 3px rgba(92,226,155,0.25);"></span>
+              <span style="font-size:12px;font-weight:600;color:#C6DEFF;">Answers tailored to your {{ selectedPlan }} plan</span>
+            </div>
+
+            <div style="margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.16);">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:0.7px;color:#BFE0FF;text-transform:uppercase;margin-bottom:11px;">Popular Questions</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <sc-for list="{{ popularQuestions }}" as="q" hint-placeholder-count="4">
+                  <button onClick="{{ q.onClick }}" style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.24);color:#EAF3FF;font-size:12.5px;font-weight:700;padding:9px 13px;border-radius:999px;cursor:pointer;transition:all .14s;" style-hover="background:rgba(255,255,255,0.24);border-color:rgba(255,255,255,0.45);">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z" fill="#BFE0FF"/></svg>
+                    {{ q.label }}
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- BENEFITS GUIDE PREVIEW -->
+        <sc-if value="{{ showPreview }}" hint-placeholder-val="{{ true }}">
+        <section style="background:#FFFFFF;border:1px solid #E4EAF2;border-radius:20px;padding:20px 20px 22px;box-shadow:0 6px 20px rgba(11,31,58,0.05);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <span style="font-size:12px;font-weight:800;letter-spacing:0.5px;color:#8296AE;text-transform:uppercase;">Example AI Guidance</span>
+            <span style="flex:1;height:1px;background:#EDF1F7;"></span>
+          </div>
+
+          <!-- user question bubble -->
+          <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+            <div style="max-width:82%;background:#505ff8;color:#fff;font-size:14px;font-weight:600;padding:12px 16px;border-radius:16px 16px 4px 16px;box-shadow:0 6px 14px rgba(80,95,248,0.24);">
+              Am I due for new glasses?
+            </div>
+          </div>
+
+          <!-- AI answer card -->
+          <div style="border:1px solid #E1EAF6;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(11,31,58,0.05);">
+            <div style="display:flex;align-items:center;gap:9px;padding:12px 15px;background:linear-gradient(90deg,#F2F8FF,#EAF2FE);border-bottom:1px solid #E1EAF6;">
+              <span style="width:26px;height:26px;border-radius:8px;background:linear-gradient(150deg,#0A63E4,#01245E);display:flex;align-items:center;justify-content:center;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#fff"/></svg>
+              </span>
+              <span style="font-size:13px;font-weight:800;color:#0B1F3A;">AI Benefits Guide</span>
+              <span style="margin-left:auto;font-size:11px;font-weight:700;color:#1FA855;background:#EAF7EE;padding:3px 8px;border-radius:6px;">Verified</span>
+            </div>
+
+            <div style="padding:16px 15px 17px;">
+              <!-- answer -->
+              <div style="margin-bottom:16px;">
+                <div style="font-size:11px;font-weight:800;letter-spacing:0.5px;color:#8296AE;text-transform:uppercase;margin-bottom:5px;">Answer</div>
+                <div style="display:flex;align-items:flex-start;gap:8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10" fill="#1FA855"/><path d="m8 12.5 2.5 2.5L16 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span style="font-size:15px;font-weight:800;color:#0B1F3A;line-height:1.4;">Yes — you're due for new glasses.</span>
+                </div>
+              </div>
+
+              <!-- plan details -->
+              <div style="background:#F5F9FF;border:1px solid #E4EFFF;border-radius:12px;padding:13px 14px;margin-bottom:16px;">
+                <div style="font-size:11px;font-weight:800;letter-spacing:0.5px;color:#8296AE;text-transform:uppercase;margin-bottom:9px;">Plan details</div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:13.5px;font-weight:600;color:#42597A;">Plan</span>
+                    <span style="font-size:13.5px;font-weight:800;color:#0B1F3A;">VSP Choice</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:13.5px;font-weight:600;color:#42597A;">Frame allowance</span>
+                    <span style="font-size:13.5px;font-weight:800;color:#0B1F3A;">$180</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:13.5px;font-weight:600;color:#42597A;">Materials copay</span>
+                    <span style="font-size:13.5px;font-weight:800;color:#0B1F3A;">$25</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- next step -->
+              <div>
+                <div style="font-size:11px;font-weight:800;letter-spacing:0.5px;color:#8296AE;text-transform:uppercase;margin-bottom:9px;">Next step</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                  <button onClick="{{ openFindDoctor }}" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#505ff8;color:#fff;border:none;border-radius:12px;padding:15px 12px;font-size:15px;font-weight:800;cursor:pointer;transition:all .14s;box-shadow:0 8px 18px rgba(80,95,248,0.3);" style-hover="background:#3b45d4;transform:translateY(-1px);">
+                    <span style="font-size:16px;">📍</span> Find Doctor
+                  </button>
+                  <button onClick="{{ openBenefits }}" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#EEF1FF;color:#3b45d4;border:1.5px solid #C7CEFB;border-radius:12px;padding:15px 12px;font-size:15px;font-weight:800;cursor:pointer;transition:all .14s;" style-hover="background:#E1E5FF;border-color:#505ff8;">
+                    <span style="font-size:16px;">📄</span> View Benefits
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:6px;justify-content:center;margin-top:14px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z" stroke="#93A4BC" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <span style="font-size:11.5px;font-weight:600;color:#93A4BC;">Guidance based on your live VSP coverage records</span>
+          </div>
+        </section>
+        </sc-if>
+
+      </aside>
+    </div>
+  </main>
+
+  <!-- ============ BENEFITS GUIDE DRAWER ============ -->
+  <div onClick="{{ closeDrawer }}" style="{{ drawerBackdropStyle }}"></div>
+  <aside style="{{ drawerPanelStyle }}">
+    <!-- header -->
+    <div style="position:relative;overflow:hidden;padding:24px 24px 22px;background:linear-gradient(150deg,#0A63E4 0%,#0146B0 52%,#01245E 100%);flex-shrink:0;">
+      <div style="position:absolute;inset:0;background:radial-gradient(120px 120px at 88% 12%,rgba(255,255,255,0.2),transparent 70%),radial-gradient(150px 150px at 8% 92%,rgba(90,170,255,0.32),transparent 70%);"></div>
+      <div style="position:relative;display:flex;align-items:flex-start;gap:13px;">
+        <span style="width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:floaty 4s ease-in-out infinite;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#fff"/><path d="M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" fill="#BFE0FF"/></svg>
+        </span>
+        <div style="flex:1;min-width:0;">
+          <h2 style="margin:0;font-size:22px;font-weight:900;letter-spacing:-0.4px;color:#fff;">Benefits Guide</h2>
+          <p style="margin:5px 0 0;font-size:13px;font-weight:500;line-height:1.45;color:#D3E6FF;">Personalized help based on your plan and benefits</p>
+        </div>
+        <button onClick="{{ closeDrawer }}" style="width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.1);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" style-hover="background:rgba(255,255,255,0.22);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Copilot Studio agent -->
+    <div style="flex:1;min-height:0;background:#FFFFFF;">
+      <iframe
+        title="VSP Benefits Guide Copilot"
+        src="https://copilotstudio.preview.microsoft.com/environments/a09ed54e-dbeb-e4f5-9225-481a6eff5002/bots/crec7_vspbenefitsguide_gr1WtU/canvas?version=2&enableFileAttachment=false&cliAgent=true"
+        frameborder="0"
+        style="display:block;width:100%;height:100%;border:0;">
+      </iframe>
+    </div>
+    <template>
+      <!-- Section 1: Suggested questions -->
+      <div style="font-size:11px;font-weight:800;letter-spacing:0.6px;color:#8296AE;text-transform:uppercase;margin-bottom:12px;">Suggested Questions</div>
+      <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:26px;">
+        <sc-for list="{{ drawerQuestions }}" as="q" hint-placeholder-count="5">
+          <button onClick="{{ q.onClick }}" style="display:inline-flex;align-items:center;gap:7px;background:#EEF1FF;border:1px solid #D3D9FE;color:#3b45d4;font-size:13px;font-weight:700;padding:10px 14px;border-radius:999px;cursor:pointer;transition:all .14s;" style-hover="background:#505ff8;border-color:#505ff8;color:#fff;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z" fill="currentColor"/></svg>
+            {{ q.label }}
+          </button>
+        </sc-for>
+      </div>
+
+      <!-- Section 3: Response area -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;min-height:24px;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:0.6px;color:#8296AE;text-transform:uppercase;">Guidance</div>
+        <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ clearGuidance }}" style="display:inline-flex;align-items:center;gap:6px;background:#FFFFFF;border:1px solid #E1E8F2;color:#5B7290;font-size:12px;font-weight:700;padding:6px 11px;border-radius:999px;cursor:pointer;transition:all .14s;" style-hover="border-color:#505ff8;color:#505ff8;background:#F4F6FF;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            Clear
+          </button>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+      <!-- Productized AI response card -->
+      <div style="border:1px solid #E1E8F5;border-radius:18px;overflow:hidden;background:#FFFFFF;box-shadow:0 10px 30px rgba(11,31,58,0.09);">
+        <!-- card header -->
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(90deg,#F2F8FF,#EAF1FF);border-bottom:1px solid #E1E8F5;">
+          <span style="width:30px;height:30px;border-radius:9px;background:linear-gradient(150deg,#505ff8,#3b45d4);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#fff"/></svg>
+          </span>
+          <span style="font-size:14px;font-weight:800;color:#0B1F3A;">AI Benefits Guide</span>
+          <span style="margin-left:auto;display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:#1FA855;background:#EAF7EE;border:1px solid #C6EBD3;padding:4px 9px;border-radius:999px;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#1FA855"/><path d="m8 12.5 2.5 2.5L16 9" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Verified
+          </span>
+        </div>
+
+        <div style="padding:16px 16px 18px;">
+          <!-- asked question -->
+          <div style="display:flex;align-items:center;gap:9px;background:#F4F7FC;border:1px solid #E6EDF6;border-radius:12px;padding:11px 13px;margin-bottom:18px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><circle cx="12" cy="12" r="9" stroke="#8296AE" stroke-width="2"/><path d="M9.5 9.5a2.5 2.5 0 0 1 4 2c0 1.5-2 1.8-2 3" stroke="#8296AE" stroke-width="2" stroke-linecap="round"/><circle cx="11.5" cy="17" r="1.1" fill="#8296AE"/></svg>
+            <span style="font-size:13.5px;font-weight:700;color:#42597A;">{{ query }}</span>
+          </div>
+
+          <!-- Section 1: Answer -->
+          <div style="margin-bottom:18px;">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:0.6px;color:#8296AE;text-transform:uppercase;margin-bottom:7px;">Answer</div>
+            <div style="display:flex;align-items:flex-start;gap:9px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10" fill="#1FA855"/><path d="m8 12.5 2.5 2.5L16 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span style="font-size:16px;font-weight:800;color:#0B1F3A;line-height:1.4;">Yes — you're due for new glasses.</span>
+            </div>
+          </div>
+
+          <!-- Section 2: What this means -->
+          <div style="margin-bottom:18px;">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:0.6px;color:#8296AE;text-transform:uppercase;margin-bottom:7px;">What this means</div>
+            <p style="margin:0;font-size:14px;font-weight:500;line-height:1.5;color:#42597A;">Your frame allowance renewed on January 1, 2026, and you have not used it yet this benefit period.</p>
+          </div>
+
+          <!-- Section 3: Helpful detail -->
+          <div style="margin-bottom:18px;">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:0.6px;color:#8296AE;text-transform:uppercase;margin-bottom:8px;">Helpful detail</div>
+            <div style="background:#F5F8FF;border:1px solid #E1EAFB;border-radius:13px;padding:14px 15px;display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:13.5px;font-weight:600;color:#5B7290;">Plan</span>
+                <span style="font-size:13.5px;font-weight:800;color:#0B1F3A;">VSP Choice</span>
+              </div>
+              <div style="height:1px;background:#E7EDF7;"></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:13.5px;font-weight:600;color:#5B7290;">Frame allowance</span>
+                <span style="font-size:13.5px;font-weight:800;color:#0B1F3A;">$180</span>
+              </div>
+              <div style="height:1px;background:#E7EDF7;"></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:13.5px;font-weight:600;color:#5B7290;">Materials copay</span>
+                <span style="font-size:13.5px;font-weight:800;color:#0B1F3A;">$25</span>
+              </div>
+              <div style="height:1px;background:#E7EDF7;"></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:13.5px;font-weight:600;color:#5B7290;">Frequency</span>
+                <span style="font-size:13.5px;font-weight:800;color:#0B1F3A;">Every calendar year</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Recommended next step -->
+          <div style="display:flex;align-items:flex-start;gap:10px;background:#EEF1FF;border:1px solid #D7DCFD;border-radius:13px;padding:13px 14px;margin-bottom:16px;">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px;"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z" stroke="#505ff8" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" fill="#505ff8"/></svg>
+            <div>
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:0.6px;color:#505ff8;text-transform:uppercase;margin-bottom:2px;">Recommended next step</div>
+              <div style="font-size:14px;font-weight:700;color:#28324A;line-height:1.4;">Find an in-network doctor.</div>
+            </div>
+          </div>
+
+          <!-- Section 5: Action buttons -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <button onClick="{{ openFindDoctor }}" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#505ff8;color:#fff;border:none;border-radius:12px;padding:15px 12px;font-size:15px;font-weight:800;cursor:pointer;transition:all .14s;box-shadow:0 8px 18px rgba(80,95,248,0.32);" style-hover="background:#3b45d4;transform:translateY(-1px);">
+              <span style="font-size:16px;">📍</span> Find Doctor
+            </button>
+            <button onClick="{{ openBenefits }}" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#EEF1FF;color:#3b45d4;border:1.5px solid #C7CEFB;border-radius:12px;padding:15px 12px;font-size:15px;font-weight:800;cursor:pointer;transition:all .14s;" style-hover="background:#E1E5FF;border-color:#505ff8;">
+              <span style="font-size:16px;">📄</span> View Benefits
+            </button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ notAnswered }}" hint-placeholder-val="{{ true }}">
+      <div style="min-height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;border:1.5px dashed #D5DEEC;border-radius:18px;background:#FBFCFF;padding:32px 24px;">
+        <span style="width:58px;height:58px;border-radius:16px;background:#EAF1FD;display:flex;align-items:center;justify-content:center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" fill="#505ff8"/></svg>
+        </span>
+        <div style="font-size:14.5px;font-weight:700;color:#5B7290;max-width:240px;line-height:1.45;">Ask a question to get personalized guidance.</div>
+      </div>
+      </sc-if>
+    </div>
+
+    <!-- Section 2: Ask a question (pinned footer) -->
+    <div style="flex-shrink:0;padding:16px 20px 18px;border-top:1px solid #E8EDF5;background:#FFFFFF;box-shadow:0 -6px 18px rgba(11,31,58,0.05);">
+      <div style="display:flex;align-items:center;gap:10px;background:#F4F7FC;border:1.5px solid #E1E8F2;border-radius:14px;padding:6px 6px 6px 16px;transition:border-color .14s;" style-focus-within="border-color:#505ff8;">
+        <input value="{{ query }}" onInput="{{ onQueryInput }}" placeholder="Ask about benefits, providers, claims, ID cards, or billing..." style="flex:1;min-width:0;border:none;background:transparent;outline:none;font-family:inherit;font-size:14px;font-weight:500;color:#0B1F3A;padding:9px 0;" />
+        <button onClick="{{ sendQuery }}" style="width:44px;height:44px;border-radius:11px;border:none;background:#505ff8;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 14px rgba(80,95,248,0.34);transition:transform .14s;" style-hover="transform:translateY(-1px);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 12l16-8-6 8 6 8-16-8Z" fill="#fff"/></svg>
+        </button>
+      </div>
+    </div>
+    </template>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:980},&quot;showPreview&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  state = { active: 'Overview', toast: '', dropdownOpen: true, selected: 'Maria Lopez', drawerOpen: false, query: '', answered: false };
+
+  flash(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: '' }), 1600);
+  }
+
+  navItem(label) {
+    const active = this.state.active === label;
+    const base = 'padding:10px 15px;border-radius:10px;font-size:14.5px;font-weight:700;letter-spacing:-0.1px;transition:all .14s ease;cursor:pointer;';
+    const style = active
+      ? base + 'color:#FFFFFF;background:rgba(255,255,255,0.12);'
+      : base + 'color:#C3D0E0;background:transparent;';
+    return {
+      label,
+      style,
+      onClick: (e) => { e.preventDefault(); this.setState({ active: label }); this.flash(label); }
+    };
+  }
+
+  icon(kind) {
+    const R = React.createElement;
+    const svg = (children) => R('svg', { width: 26, height: 26, viewBox: '0 0 24 24', fill: 'none' }, children);
+    switch (kind) {
+      case 'doctor':
+        return svg([
+          R('path', { key: 1, d: 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z', stroke: '#505ff8', strokeWidth: 2, strokeLinejoin: 'round' }),
+          R('circle', { key: 2, cx: 12, cy: 10, r: 2.6, fill: '#505ff8' })
+        ]);
+      case 'shield':
+        return svg([
+          R('path', { key: 1, d: 'M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z', stroke: '#505ff8', strokeWidth: 2, strokeLinejoin: 'round' }),
+          R('path', { key: 2, d: 'm8.5 12 2.4 2.4L16 9.5', stroke: '#505ff8', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' })
+        ]);
+      case 'card':
+        return svg([
+          R('rect', { key: 1, x: 3, y: 5, width: 18, height: 14, rx: 2.4, stroke: '#505ff8', strokeWidth: 2 }),
+          R('path', { key: 2, d: 'M3 9.5h18', stroke: '#505ff8', strokeWidth: 2 }),
+          R('path', { key: 3, d: 'M6.5 14.5h5', stroke: '#505ff8', strokeWidth: 2, strokeLinecap: 'round' })
+        ]);
+      case 'claim':
+        return svg([
+          R('path', { key: 1, d: 'M6 3h9l4 4v14H6V3Z', stroke: '#505ff8', strokeWidth: 2, strokeLinejoin: 'round' }),
+          R('path', { key: 2, d: 'M14 3v4h4', stroke: '#505ff8', strokeWidth: 2, strokeLinejoin: 'round' }),
+          R('path', { key: 3, d: 'M9 12h6M9 15.5h6M9 8.5h3', stroke: '#505ff8', strokeWidth: 2, strokeLinecap: 'round' })
+        ]);
+    }
+  }
+
+  bIcon(kind, color) {
+    const R = React.createElement;
+    const svg = (children) => R('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none' }, children);
+    if (kind === 'dollar') return svg([R('path', { key: 1, d: 'M12 2v20M16 6.5C16 4.5 14.2 3.5 12 3.5S8 4.7 8 6.8 9.8 9.5 12 10s4 1 4 3.2S14.2 16.5 12 16.5 8 15.3 8 13.5', stroke: color, strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' })]);
+    if (kind === 'receipt') return svg([R('path', { key: 1, d: 'M6 3h12v18l-3-1.8L12 21l-3-1.8L6 21V3Z', stroke: color, strokeWidth: 2, strokeLinejoin: 'round' }), R('path', { key: 2, d: 'M9 8h6M9 12h6', stroke: color, strokeWidth: 2, strokeLinecap: 'round' })]);
+    if (kind === 'check') return svg([R('circle', { key: 1, cx: 12, cy: 12, r: 9, stroke: color, strokeWidth: 2 }), R('path', { key: 2, d: 'm8 12.5 2.5 2.5L16 9', stroke: color, strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' })]);
+    if (kind === 'calendar') return svg([R('rect', { key: 1, x: 4, y: 5, width: 16, height: 15, rx: 2, stroke: color, strokeWidth: 2 }), R('path', { key: 2, d: 'M4 9h16M8 3v4M16 3v4', stroke: color, strokeWidth: 2, strokeLinecap: 'round' })]);
+  }
+
+  renderVals() {
+    const wrap = (bg) => `width:34px;height:34px;border-radius:10px;background:${bg};display:flex;align-items:center;justify-content:center;`;
+
+    const PERSONAS = [
+      { name: 'Maria Lopez', initials: 'ML', plan: 'VSP Choice', ex: 'Due for glasses' },
+      { name: 'Sara Kim', initials: 'SK', plan: 'VSP Signature', ex: 'Needs eye exam for son' },
+      { name: 'James Ochoa', initials: 'JO', plan: 'VSP Choice', ex: 'Checking coverage' },
+      { name: 'David Chen', initials: 'DC', plan: 'VSP Signature', ex: 'Billing question' },
+      { name: 'Priya Patel', initials: 'PP', plan: 'VSP Choice', ex: 'Used contact benefit already' },
+      { name: 'Robert Nguyen', initials: 'RN', plan: 'VSP Signature Plus', ex: 'Diabetes eye care coverage' },
+    ];
+    const sel = PERSONAS.find(p => p.name === this.state.selected) || PERSONAS[0];
+    const avatar = 'width:36px;height:36px;border-radius:50%;background:linear-gradient(150deg,#7d88ff,#505ff8);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;';
+    const exampleNames = ['Maria Lopez', 'Sara Kim', 'David Chen', 'Priya Patel', 'Robert Nguyen'];
+
+    return {
+      selectedName: sel.name,
+      selectedInitials: sel.initials,
+      selectedPlan: sel.plan,
+      dropdownOpen: this.state.dropdownOpen,
+      toggleDropdown: () => this.setState(s => ({ dropdownOpen: !s.dropdownOpen })),
+      personas: PERSONAS.map(p => ({
+        name: p.name,
+        initials: p.initials,
+        plan: p.plan,
+        selected: p.name === sel.name,
+        avatarStyle: avatar,
+        rowStyle: `display:flex;align-items:center;gap:11px;width:100%;padding:9px 10px;border:none;border-radius:11px;cursor:pointer;background:${p.name === sel.name ? '#EEF1FF' : 'transparent'};`,
+        onClick: () => this.setState({ selected: p.name, dropdownOpen: false }),
+      })),
+      examples: exampleNames.map(n => {
+        const p = PERSONAS.find(x => x.name === n);
+        return { name: n.split(' ')[0], scenario: p.ex };
+      }),
+      popularQuestions: [
+        'Am I due for new glasses?',
+        "What's my frame allowance?",
+        'Find a doctor near me',
+        'Show my ID card',
+      ].map(label => ({ label, onClick: () => this.setState({ drawerOpen: true, query: label, answered: true }) })),
+
+      drawerQuestions: [
+        'Am I due for new glasses?',
+        "What's my frame allowance?",
+        'Find a doctor near me',
+        'Show my claim history',
+        'Show my ID card',
+      ].map(label => ({ label, onClick: () => this.setState({ query: label, answered: true }) })),
+
+      drawerOpen: this.state.drawerOpen,
+      query: this.state.query,
+      answered: this.state.answered,
+      notAnswered: !this.state.answered,
+      openDrawer: () => this.setState({ drawerOpen: true }),
+      closeDrawer: () => this.setState({ drawerOpen: false }),
+      onQueryInput: (e) => this.setState({ query: e.target.value }),
+      clearGuidance: () => this.setState({ answered: false, query: '' }),
+      sendQuery: () => { if (this.state.query.trim()) this.setState({ answered: true }); },
+      drawerBackdropStyle: `position:fixed;inset:0;z-index:60;background:rgba(11,25,48,0.42);backdrop-filter:blur(2px);transition:opacity .32s ease;opacity:${this.state.drawerOpen ? '1' : '0'};pointer-events:${this.state.drawerOpen ? 'auto' : 'none'};`,
+      drawerPanelStyle: `position:fixed;top:0;right:0;bottom:0;width:420px;max-width:92vw;z-index:61;display:flex;flex-direction:column;background:#FFFFFF;box-shadow:-24px 0 60px rgba(11,31,58,0.24);transition:transform .34s cubic-bezier(.4,.14,.2,1);transform:translateX(${this.state.drawerOpen ? '0' : '100%'});`,
+
+      showPreview: this.props.showPreview ?? true,
+      nav: ['Find Doctor', 'Benefits', 'Claims', 'ID Card', 'Account'].map(l => this.navItem(l)),
+
+      benefits: [
+        { label: 'Frame Allowance', value: '$180', sub: 'Available now', valueColor: '#062350', icon: this.bIcon('dollar', '#505ff8'), iconWrap: wrap('#EAF1FD') },
+        { label: 'Exam Copay', value: '$15', sub: 'Per visit', valueColor: '#062350', icon: this.bIcon('receipt', '#505ff8'), iconWrap: wrap('#EAF1FD') },
+        { label: 'Coverage Status', value: 'Active', sub: 'Through Dec 2026', valueColor: '#177A44', icon: this.bIcon('check', '#1FA855'), iconWrap: wrap('#EAF7EE') },
+        { label: 'Next Benefit', value: 'Available', sub: 'Eligible today', valueColor: '#062350', icon: this.bIcon('calendar', '#505ff8'), iconWrap: wrap('#EAF1FD') },
+      ],
+
+      actions: [
+        { title: 'Find a Doctor', sub: 'Search in-network providers', icon: this.icon('doctor'), iconBg: '#EAF1FD', onClick: () => this.flash('Find a Doctor') },
+        { title: 'View Benefits', sub: 'Coverage & allowances', icon: this.icon('shield'), iconBg: '#EAF1FD', onClick: () => this.flash('View Benefits') },
+        { title: 'View ID Card', sub: 'Digital member card', icon: this.icon('card'), iconBg: '#EAF1FD', onClick: () => this.flash('View ID Card') },
+        { title: 'Claims', sub: 'History & reimbursement', icon: this.icon('claim'), iconBg: '#EAF1FD', onClick: () => this.flash('Claims') },
+      ],
+
+      openGuide: () => this.setState({ drawerOpen: true }),
+      openFindDoctor: () => this.flash('Find a Doctor'),
+      openBenefits: () => this.flash('View Benefits'),
+    };
+  }
+}
+</script>
+</body>
+</html>
