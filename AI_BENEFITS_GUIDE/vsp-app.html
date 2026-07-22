@@ -123,39 +123,6 @@
         gap: 16px;
         margin-left: auto;
       }
-      .nav-notif {
-        position: relative;
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(255, 255, 255, 0.06);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background 0.13s;
-      }
-      .nav-notif:hover {
-        background: rgba(255, 255, 255, 0.14);
-      }
-      .notif-badge {
-        position: absolute;
-        top: 8px;
-        right: 9px;
-        min-width: 16px;
-        height: 16px;
-        padding: 0 4px;
-        border-radius: 8px;
-        background: #e5484d;
-        color: #fff;
-        font-size: 10px;
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid #142234;
-      }
       .nav-divider {
         width: 1px;
         height: 28px;
@@ -1960,6 +1927,7 @@
           <span class="l1">vsp</span><span class="l2">vision care</span>
         </div>
         <div class="nav-links">
+          <button class="nav-link" onclick="closeFlyout(); goPage('home')">Overview</button>
           <button class="nav-link" onclick="goPage('find-doctor')">
             Find Doctor
           </button>
@@ -1971,27 +1939,6 @@
           <button class="nav-link" onclick="goPage('billing')">Account</button>
         </div>
         <div class="nav-right">
-          <button class="bg-trigger" onclick="openFlyout()">
-            <span class="spark">✦</span> Benefits Guide
-          </button>
-          <div class="nav-notif">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9Z"
-                stroke="#DDE6F0"
-                stroke-width="1.8"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M10 21a2 2 0 0 0 4 0"
-                stroke="#DDE6F0"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-            </svg>
-            <span class="notif-badge">2</span>
-          </div>
-          <div class="nav-divider"></div>
           <div class="persona-wrap">
             <div class="persona-label">Demo Persona</div>
             <button class="persona-btn" onclick="toggleDD()" id="personaBtn">
@@ -2026,6 +1973,10 @@
               <div class="dd-list" id="ddList"></div>
             </div>
           </div>
+          <div class="nav-divider"></div>
+          <button class="bg-trigger" onclick="openFlyout()">
+            <span class="spark">✦</span> Iris Vision Guide
+          </button>
         </div>
       </div>
     </nav>
@@ -3488,7 +3439,7 @@
         "billing",
       ];
       const NAV_LABELS = {
-        home: null,
+        home: "Overview",
         "find-doctor": "Find Doctor",
         benefits: "Benefits",
         claims: "Claims",
