@@ -66,7 +66,7 @@
         max-width: 1320px;
         margin: 0 auto;
         padding: 0 32px;
-        height: 76px;
+        height: 96px;
         display: flex;
         align-items: center;
         gap: 36px;
@@ -1694,6 +1694,13 @@
         flex-direction: column;
         gap: 14px;
       }
+      .fp-intro {
+        margin: 0;
+        padding: 2px 2px 0;
+        color: #425a78;
+        font-size: 13px;
+        line-height: 1.55;
+      }
       .fp-chips-label {
         font-size: 11px;
         font-weight: 700;
@@ -3115,6 +3122,7 @@
         </div>
       </div>
       <div class="fp-body" id="fpBody">
+        <p class="fp-intro">Hi there, I am Iris, your vision guide assistent. I am here when you need me, just click the white button on top of page if you need some help.</p>
         <div>
           <div class="fp-chips-label">Suggested questions</div>
           <div class="fp-chip-row" id="fpChipRow"></div>
@@ -4192,6 +4200,8 @@ Respond ONLY with valid JSON, no prose, no markdown, in exactly this shape:
       buildDD();
       updateAll();
       goPage("home");
+      openFlyout();
+      window.setTimeout(closeFlyout, 5000);
     </script>
   </body>
 </html>
