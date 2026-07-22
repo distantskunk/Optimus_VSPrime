@@ -3,3 +3,6 @@
 
 # Microsoft Office temporary lock files
 ~$*.docx
+
+# Local environment secrets
+.env.local
