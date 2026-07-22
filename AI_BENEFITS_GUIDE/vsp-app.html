@@ -1744,6 +1744,27 @@
       .fp-close:hover {
         background: rgba(255, 255, 255, 0.26);
       }
+      .fp-clear {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-left: auto;
+        margin-right: 6px;
+        transition: background 0.13s, color 0.13s;
+      }
+      .fp-clear:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
       .fp-member-pill {
         display: inline-flex;
         align-items: center;
@@ -3193,7 +3214,10 @@
               Personalized help based on your plan and benefits
             </div>
           </div>
-          <button class="fp-close" onclick="closeFlyout()">✕</button>
+          <button class="fp-clear" onclick="fpClearThread()" title="Clear conversation">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="fp-close" onclick="closeFlyout()" title="Close" style="margin-left:0;">✕</button>
         </div>
         <div class="fp-member-pill">
           <span class="fp-pill-dot"></span>
@@ -4014,6 +4038,14 @@
         document.body.style.overflow = "";
       }
 
+      function fpClearThread() {
+        document.getElementById("fpThread").innerHTML = "";
+        document.getElementById("fpEmpty").style.display = "";
+        fpPendingQ = null;
+        document.getElementById("fpInput").value = "";
+        document.getElementById("fpInput").focus();
+      }
+
       function askIrisAboutEyewear() {
         openFlyout();
         document.getElementById("fpInput").value = "Am I eligible for new glasses?";
@@ -4179,7 +4211,7 @@ RULES:
 - If a member-specific question is asked and no member is selected, set needs_clarification=true with clarification_question="Which demo member should I use: Maria Lopez, Sara Kim, James Ochoa, David Chen, Priya Patel, or Robert Nguyen?" and leave all other fields null.
 - Escalate (escalate=true) when: confidence is low; request is outside coverage/providers/claims/ID cards/billing; member wants to appeal or complain; request involves a medical condition exception; member appears frustrated or requests a human; a claim has been pending more than 30 days.
 - Tone: warm, plainspoken, quietly confident, concise.
-- Greetings (hi, hello, hey, etc.): respond as Iris with a warm one-line greeting and invite the member to ask a question. Set answer="Hi! I'm Iris, your VSP Benefits Guide. What can I help you with today?" and what_this_means to a short list of what you can help with. Do NOT dump plan data on a greeting.
+- Greetings (hi, hello, hey, etc.): respond as Iris with a warm one-line greeting and invite the member to ask a question. Set answer to "Hi! I'm Iris, your VSP Benefits Guide. What can I help you with today?" Do NOT output plan data on a greeting.
 - Use only these action_ids: find_doctor, view_benefits, view_id_card, claims_history, reimbursement_help, billing_actions, contact_support.
 
 SELECTED MEMBER: ${memberData ? JSON.stringify(memberData) : "none selected"}
@@ -4210,19 +4242,21 @@ Respond ONLY with valid JSON, no prose, no markdown, in exactly this shape:
       }
 
       function fpFallback(question) {
-        const q = question.toLowerCase().trim();
+        const qLow = question.toLowerCase().trim();
 
-        // Greeting — respond warmly, don't dump plan data
-        if (/^(hi|hello|hey|howdy|good morning|good afternoon|good evening|sup|what's up|whats up|hiya|greetings)[\s!?.]*$/.test(q)) {
+        // Greeting — don't dump plan data, just say hello
+        if (/^(hi|hello|hey|howdy|good morning|good afternoon|good evening|sup|hiya|greetings)[\s!?.]*$/.test(qLow)) {
           return {
             needs_clarification: false,
             escalate: false,
             answer: "Hi! I'm Iris, your VSP Benefits Guide. What can I help you with today?",
             what_this_means: "I can help with coverage questions, finding a doctor, checking claims, your ID card, and more.",
-            helpful_detail: selectedMember ? `I'm currently viewing your account as ${selectedMember}.` : "Select a demo member from the top menu to get personalized answers.",
-            recommended_next_step: "Try one of the suggested questions above, or just ask me anything about your vision benefits.",
+            helpful_detail: selectedMember
+              ? `I'm currently viewing your account as ${selectedMember}.`
+              : "Select a demo member from the top menu to get personalized answers.",
+            recommended_next_step: "Try one of the suggested questions, or just ask me anything about your vision benefits.",
             primary_action: { label: "View Benefits", action_id: "view_benefits" },
-            secondary_action: null
+            secondary_action: null,
           };
         }
 
@@ -4233,9 +4267,9 @@ Respond ONLY with valid JSON, no prose, no markdown, in exactly this shape:
               "Which demo member should I use: Maria Lopez, Sara Kim, James Ochoa, David Chen, Priya Patel, or Robert Nguyen?",
           };
         const p = PERSONAS[selectedMember];
-        const qStr = question.toLowerCase();
+        const q = question.toLowerCase();
         const fn = selectedMember.split(" ")[0];
-        if (/representative|human|talk to|person/.test(qStr))
+        if (/representative|human|talk to|person/.test(q))
           return {
             escalate: true,
             escalation_reason: "member requested a human representative",
@@ -4249,7 +4283,7 @@ Respond ONLY with valid JSON, no prose, no markdown, in exactly this shape:
               action_id: "contact_support",
             },
           };
-        if (/doctor|provider|warby|torres/.test(qStr))
+        if (/doctor|provider|warby|torres/.test(q))
           return {
             answer: `Here are in-network providers for ${fn}'s ${p.planTier} plan.`,
             what_this_means:
@@ -4258,7 +4292,7 @@ Respond ONLY with valid JSON, no prose, no markdown, in exactly this shape:
             recommended_next_step: "Pick a provider to see availability.",
             primary_action: { label: "Find Doctor", action_id: "find_doctor" },
           };
-        if (/id card/.test(qStr))
+        if (/id card/.test(q))
           return {
             answer: `${fn}'s digital ID card is ready.`,
             what_this_means: "Show it at an appointment or download as PDF.",
@@ -4269,7 +4303,7 @@ Respond ONLY with valid JSON, no prose, no markdown, in exactly this shape:
               action_id: "view_id_card",
             },
           };
-        if (/claim|reimburs/.test(qStr)) {
+        if (/claim|reimburs/.test(q)) {
           const has = (CLAIMS[selectedMember] || []).length > 0;
           return {
             answer: has
@@ -4287,7 +4321,7 @@ Respond ONLY with valid JSON, no prose, no markdown, in exactly this shape:
             },
           };
         }
-        if (/payment|bill|premium/.test(qStr))
+        if (/payment|bill|premium/.test(q))
           return {
             answer: p.billable
               ? `${fn}'s next payment of ${p.monthlyPremium} is due on the ${p.autopayDate}.`
